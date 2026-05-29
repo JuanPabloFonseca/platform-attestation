@@ -35,11 +35,11 @@ var (
 	prodRwSigningKeyInfo = titandice.KeyInfo{0x47, 0x22, 0x4d, 0xc6}
 )
 
-// validateAndVerifyChain contains the core logic for validating a certificate chain byte slice.
-func validateAndVerifyChain(certChainBytes []byte) error {
+// GetValidateScribeCertificateChainOptions returns the default root certs and validation key.
+func GetValidateScribeCertificateChainOptions() (*titandice.ValidateScribeCertificateChainOptions, error) {
 	roots, err := scriberoots.GetAllScribeRoots()
 	if err != nil {
-		return fmt.Errorf("getting embedded scribe roots: %w", err)
+		return nil, fmt.Errorf("getting embedded scribe roots: %w", err)
 	}
 
 	var rootCerts [][]byte
@@ -47,10 +47,19 @@ func validateAndVerifyChain(certChainBytes []byte) error {
 		rootCerts = append(rootCerts, root)
 	}
 
-	opts := &titandice.ValidateScribeCertificateChainOptions{
+	return &titandice.ValidateScribeCertificateChainOptions{
 		ScribeCertificates: rootCerts,
 		RwSigningKeyInfos:  []titandice.KeyInfo{prodRwSigningKeyInfo},
+	}, nil
+}
+
+// validateAndVerifyChain contains the core logic for validating a certificate chain byte slice.
+func validateAndVerifyChain(certChainBytes []byte) error {
+	opts, err := GetValidateScribeCertificateChainOptions()
+	if err != nil {
+		return fmt.Errorf("failed to get scribe cert chain options: %w", err)
 	}
+
 	validator, err := titandice.NewValidator(opts)
 	if err != nil {
 		return fmt.Errorf("creating validator: %w", err)
