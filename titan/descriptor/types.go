@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package measurements
+package descriptor
 
 import (
 	"encoding/binary"
@@ -171,7 +171,7 @@ const DescriptorMajorDefault = 1
 const DescriptorMinorDefault = 0
 
 // Alignment ImageDescriptors must be aligned to 64kB boundaries.
-const Alignment = uint32(0x10000)
+const Alignment = 0x10000
 
 // The currently supported structure format is 1.0.
 // Minor number changes are backward compatible.

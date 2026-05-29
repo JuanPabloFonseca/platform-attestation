@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package measurements
+package descriptor
 
 import (
 	"crypto/sha256"
@@ -684,4 +684,20 @@ func (h HashSHA512) Magic() uint32 {
 // Size of the stored hash value.
 func (h HashSHA512) Size() int {
 	return sha512.Size
+}
+
+// SignatureValueSize returns the size of the trailing signature/digest bytes (nsig).
+func SignatureValueSize(scheme VerificationScheme) int {
+	switch scheme {
+	case VerificationSchemeRSA2048PKCS15SHA256:
+		return 256
+	case VerificationSchemeRSA3072PKCS15SHA256:
+		return 384
+	case VerificationSchemeRSA4096PKCS15SHA256, VerificationSchemeRSA4096PKCS15SHA512:
+		return 512
+	case VerificationSchemeSHA256:
+		return 32
+	default:
+		return 0
+	}
 }
