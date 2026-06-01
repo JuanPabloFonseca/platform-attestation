@@ -1,4 +1,4 @@
-module github.com/google/platform-attestation
+module github.com/google/platform-attestation/titan
 
 go 1.26.2
 
