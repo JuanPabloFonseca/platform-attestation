@@ -20,8 +20,6 @@ import (
 	"crypto/sha256"
 	"math/big"
 	"slices"
-
-
 )
 
 func p256KeyFromLEBytes(x, y []byte) *ecdsa.PublicKey {
