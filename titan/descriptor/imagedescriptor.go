@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package measurements
+package descriptor
 
 import (
 	"bufio"
@@ -339,8 +339,8 @@ func (dp DescriptorParts) String() string {
 }
 
 // ReadDescriptorParts read the entire collection of structures from a binary image descriptor.
-func ReadDescriptorParts(r io.ReadSeeker) (DescriptorParts, error) {
-	dp := DescriptorParts{}
+func ReadDescriptorParts(r io.ReadSeeker) (*DescriptorParts, error) {
+	dp := &DescriptorParts{}
 	desc, err := ReadImageDescriptor(r)
 	if err != nil {
 		return dp, err
@@ -473,6 +473,11 @@ func (descHash ImageDescriptorHash) Digest() []byte {
 	return descHash.digest
 }
 
+// HashType returns the CR51 image descriptor hash type.
+func (descHash ImageDescriptorHash) HashType() HashType {
+	return descHash.hashType
+}
+
 // ReadImageDescriptor reads the image descriptor file and translates the bytes into the
 // imagedescriptor.DescriptorParts struct.
 func ReadImageDescriptorFile(ctx context.Context, path string) (*DescriptorParts, error) {
@@ -485,7 +490,7 @@ func ReadImageDescriptorFile(ctx context.Context, path string) (*DescriptorParts
 	if err != nil {
 		return nil, fmt.Errorf("error %v: failed to deserialize image descriptor parts", err)
 	}
-	return &parts, nil
+	return parts, nil
 }
 
 // getBlobHash returns the hash of the blob with the appropriate hash type.
@@ -518,10 +523,10 @@ func SerializeImageDescriptor(idesc *DescriptorParts) ([]byte, int, error) {
 	return b.Bytes(), nsig, err
 }
 
-// GetImageDescriptorHash computes the hash of the image descriptor without the signature.
+// HashImageDescriptor computes the hash of the image descriptor without the signature.
 // The signature is not included because the hash value should match what the Titan
 // firmware will measure.
-func GetImageDescriptorHash(parts *DescriptorParts) (*ImageDescriptorHash, error) {
+func HashImageDescriptor(parts *DescriptorParts) (*ImageDescriptorHash, error) {
 	var err error
 	var idblob []byte
 	var nsig int
@@ -539,4 +544,64 @@ func GetImageDescriptorHash(parts *DescriptorParts) (*ImageDescriptorHash, error
 		return nil, fmt.Errorf("error %v: failed to get blob hash", err)
 	}
 	return &ImageDescriptorHash{hash, parts.Hash.Type()}, nil
+}
+
+// Extract searches for a CR51 image descriptor on 64KB boundaries starting from the end of the image.
+func Extract(r io.ReadSeeker) (*DescriptorParts, error) {
+	size, err := r.Seek(0, io.SeekEnd)
+	if err != nil {
+		return nil, fmt.Errorf("failed to seek to end: %w", err)
+	}
+
+	// Scan for the DescriptorMagic on 64KB boundaries starting from the end of the image.
+	for offset := (size / Alignment) * Alignment; offset >= 0; offset -= Alignment {
+		if offset+8 > size {
+			continue
+		}
+
+		if _, err := r.Seek(offset, io.SeekStart); err != nil {
+			continue
+		}
+
+		var magic uint64
+		if err := binary.Read(r, binary.LittleEndian, &magic); err != nil {
+			continue
+		}
+
+		if magic == DescriptorMagicLE {
+			if _, err := r.Seek(offset, io.SeekStart); err != nil {
+				return nil, err
+			}
+			parts, err := ReadDescriptorParts(r)
+			if err != nil {
+				continue
+			}
+
+			// A valid image_descriptor knows its own offset.
+			if int64(parts.Descriptor.DescriptorOffset) == offset {
+				return parts, nil
+			}
+		}
+	}
+	return nil, fmt.Errorf("no valid CR51 descriptor found")
+}
+
+// ExtractAndHash scans the image provided by r and returns the integrity hash of the descriptor.
+func ExtractAndHash(r io.ReadSeeker) (*ImageDescriptorHash, error) {
+	parts, err := Extract(r)
+	if err != nil {
+		return nil, err
+	}
+	return HashImageDescriptor(parts)
+}
+
+// HashFromFile is a helper that opens a file, scans for the descriptor, and returns its integrity hash.
+func HashFromFile(path string) (*ImageDescriptorHash, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	return ExtractAndHash(f)
 }
