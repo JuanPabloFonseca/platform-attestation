@@ -8,15 +8,15 @@ import (
 	"io"
 	"os"
 
-	"github.com/google/platform-attestation/titan/bundlev3"
-	"github.com/google/platform-attestation/titan/descriptor"
-	"github.com/google/platform-attestation/titan/titanheader"
+	"github.com/google/platform-attestation/titan/bundlev2/bundlev2"
+	"github.com/google/platform-attestation/titan/descriptor/descriptor"
+	"github.com/google/platform-attestation/titan/titanheader/titanheader"
 )
 
 type firmwareType string
 
 const (
-	titanV3         firmwareType = "titan_v3"
+	titanV2         firmwareType = "titan_v2"
 	imageDescriptor firmwareType = "image_descriptor"
 )
 
@@ -65,13 +65,13 @@ func runGenerateHash(args []string, stdout, stderr io.Writer) error {
 	}
 	defer f.Close()
 
-	// 1. Sniff Step A: Check if it is a Titan V3 Bundle.
+	// 1. Sniff Step A: Check if it is a Titan V2 Bundle.
 	if _, err := titanheader.ScanHeader(f); err == nil {
 		if _, err := f.Seek(0, io.SeekStart); err == nil {
-			res, err := bundlev3.HashBundleV3(f)
+			res, err := bundlev2.HashBundleV2(f)
 			if err == nil {
 				majorStr := fmt.Sprintf("%d", res.Major)
-				printCLIResult(titanV3, "", majorStr, res.Digest, stdout)
+				printCLIResult(titanV2, "", majorStr, res.Digest, stdout)
 				return nil
 			}
 		}
@@ -88,14 +88,14 @@ func runGenerateHash(args []string, stdout, stderr io.Writer) error {
 	}
 
 	// 3. Fallback: Binary packaging not recognized.
-	return fmt.Errorf("unrecognized or corrupt firmware packaging format (failed both Titan V3 and BIOS/BMC audits)")
+	return fmt.Errorf("unrecognized or corrupt firmware packaging format (failed both Titan V2 and BIOS/BMC audits)")
 }
 
 func printCLIResult(typ firmwareType, hashType, payloadVersion string, digest []byte, w io.Writer) {
 	digestHex := hex.EncodeToString(digest)
 
-	if typ == titanV3 {
-		fmt.Fprintln(w, "Type:    Titan V3 Bundle")
+	if typ == titanV2 {
+		fmt.Fprintln(w, "Type:    Titan V2 Bundle")
 		fmt.Fprintf(w, "Version: %s\n", payloadVersion)
 	} else {
 		fmt.Fprintln(w, "Type:    Image Descriptor")

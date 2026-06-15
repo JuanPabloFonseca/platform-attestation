@@ -20,7 +20,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/go-tpm/tpm2"
+	"google3/third_party/golang/github_com/google/go_tpm/v/v0/tpm2/tpm2"
 )
 
 var (

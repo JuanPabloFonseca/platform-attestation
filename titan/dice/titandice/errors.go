@@ -15,8 +15,8 @@
 package titandice
 
 import (
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"google3/third_party/golang/grpc/codes/codes"
+	"google3/third_party/golang/grpc/status/status"
 )
 
 var (

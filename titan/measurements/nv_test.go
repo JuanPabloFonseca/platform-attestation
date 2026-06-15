@@ -11,10 +11,10 @@ import (
 	"strings"
 	"testing"
 
-	apb "github.com/GoogleCloudPlatform/confidential-space/server/proto/gen/attestation"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/google/go-tpm/tpm2"
+	apb "google3/third_party/confidential_space/server/proto/attestation_go_proto"
+	"google3/third_party/golang/cmp/cmp"
+	"google3/third_party/golang/cmp/cmpopts/cmpopts"
+	"google3/third_party/golang/github_com/google/go_tpm/v/v0/tpm2/tpm2"
 )
 
 var expectedWarmResetNVPublic = tpm2.TPMSNVPublic{
@@ -281,7 +281,7 @@ func TestExtractWarmResetCount(t *testing.T) {
 
 	// Construct NV contents.
 	buf := new(bytes.Buffer)
-	binary.Write(buf, binary.LittleEndian, expectedCount)
+	binary.Write(buf, binary.BigEndian, expectedCount)
 	nvContents := buf.Bytes()
 
 	// Get expected name.
@@ -343,7 +343,7 @@ func TestExtractWarmResetCountErrors(t *testing.T) {
 	nonce := []byte("testnonce")
 	expectedCount := int64(42)
 	buf := new(bytes.Buffer)
-	binary.Write(buf, binary.LittleEndian, expectedCount)
+	binary.Write(buf, binary.BigEndian, expectedCount)
 	nvContents := buf.Bytes()
 	expectedPublic := expectedWarmResetNVPublic
 	expectedName, _ := tpm2.NVName(&expectedPublic)
