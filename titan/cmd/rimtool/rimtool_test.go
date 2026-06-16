@@ -9,17 +9,17 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/platform-attestation/titan/bundlev3"
-	"github.com/google/platform-attestation/titan/descriptor"
-	"github.com/google/platform-attestation/titan/titanheader"
+	"github.com/google/platform-attestation/titan/bundlev2/bundlev2"
+	"github.com/google/platform-attestation/titan/descriptor/descriptor"
+	"github.com/google/platform-attestation/titan/titanheader/titanheader"
 )
 
 // =============================================================================
 // 1. Symmetrical Mock Data Builders
 // =============================================================================
 
-// createMockBundleV3 generates a valid in-memory V3 bundle stream.
-func createMockBundleV3(t *testing.T, magic uint32, major uint32) []byte {
+// createMockBundleV2 generates a valid in-memory V2 bundle stream.
+func createMockBundleV2(t *testing.T, magic uint32, major uint32) []byte {
 	t.Helper()
 
 	const testAlignedImageSize uint32 = 2048
@@ -38,7 +38,7 @@ func createMockBundleV3(t *testing.T, magic uint32, major uint32) []byte {
 
 	var descBuf bytes.Buffer
 	if err := binary.Write(&descBuf, binary.LittleEndian, &desc); err != nil {
-		t.Fatalf("createMockBundleV3 failed: %v", err)
+		t.Fatalf("createMockBundleV2 failed: %v", err)
 	}
 	descBytes := descBuf.Bytes()
 
@@ -58,15 +58,15 @@ func createMockBundleV3(t *testing.T, magic uint32, major uint32) []byte {
 	fwB[markerIndex] = markerB
 	hashB := sha256.Sum256(fwB[titanheader.TagFieldOffset:])
 
-	var metadata bundlev3.UnsignedMetadata
-	metadata.Tag = bundlev3.UnsignedMetadataMagic // "IMG_HASH"
-	metadata.StructLength = bundlev3.UnsignedMetadataLength
+	var metadata bundlev2.UnsignedMetadata
+	metadata.Tag = bundlev2.UnsignedMetadataMagic // "IMG_HASH"
+	metadata.StructLength = bundlev2.UnsignedMetadataLength
 	metadata.RWAHash = hashA
 	metadata.RWBHash = hashB
 
 	var metaBuf bytes.Buffer
 	if err := binary.Write(&metaBuf, binary.LittleEndian, &metadata); err != nil {
-		t.Fatalf("createMockBundleV3 serialize failed: %v", err)
+		t.Fatalf("createMockBundleV2 serialize failed: %v", err)
 	}
 	metaBytes := metaBuf.Bytes()
 
@@ -139,16 +139,16 @@ func createMockDescriptor(t *testing.T) []byte {
 // 2. Hermetic Unit Tests
 // =============================================================================
 
-// TestRunApp_TitanV3_Success checks CLI sniffing and formatting on a Titan V3 bundle.
-func TestRunApp_TitanV3_Success(t *testing.T) {
-	const magic = bundlev3.TitanV3Magic
+// TestRunApp_TitanV2_Success checks CLI sniffing and formatting on a Titan V2 bundle.
+func TestRunApp_TitanV2_Success(t *testing.T) {
+	const magic = bundlev2.TitanV3Magic
 	const major = 123
-	bundleBytes := createMockBundleV3(t, magic, major)
+	bundleBytes := createMockBundleV2(t, magic, major)
 
 	tmpDir := t.TempDir()
 	path := filepath.Join(tmpDir, "titan.bin")
 	if err := os.WriteFile(path, bundleBytes, 0644); err != nil {
-		t.Fatalf("Failed to write V3 mock file: %v", err)
+		t.Fatalf("Failed to write V2 mock file: %v", err)
 	}
 
 	var stdout, stderr bytes.Buffer
@@ -159,8 +159,8 @@ func TestRunApp_TitanV3_Success(t *testing.T) {
 	}
 
 	outStr := stdout.String()
-	if !strings.Contains(outStr, "Titan V3 Bundle") {
-		t.Errorf("Unexpected stdout: got %q, want substring 'Titan V3 Bundle'", outStr)
+	if !strings.Contains(outStr, "Titan V2 Bundle") {
+		t.Errorf("Unexpected stdout: got %q, want substring 'Titan V2 Bundle'", outStr)
 	}
 	if !strings.Contains(outStr, "Version: 123") {
 		t.Errorf("Unexpected stdout: got %q, want substring 'Version: 123'", outStr)

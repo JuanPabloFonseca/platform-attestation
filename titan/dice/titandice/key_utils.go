@@ -20,6 +20,8 @@ import (
 	"crypto/sha256"
 	"math/big"
 	"slices"
+
+	_ "google3/go/tools/nogo/allowlist/crypto/elliptic"
 )
 
 func p256KeyFromLEBytes(x, y []byte) *ecdsa.PublicKey {

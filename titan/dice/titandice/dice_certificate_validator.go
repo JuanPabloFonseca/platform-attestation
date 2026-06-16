@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/google/go-tpm/tpm2"
+	"google3/third_party/golang/github_com/google/go_tpm/v/v0/tpm2/tpm2"
 )
 
 // Validator contains the data necessary to validate DICE cert chains.

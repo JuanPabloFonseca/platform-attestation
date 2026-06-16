@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/google/platform-attestation/titan/dice/scriberoots"
-	"github.com/google/platform-attestation/titan/dice/titandice"
+	"github.com/google/platform-attestation/titan/dice/scriberoots/scriberoots"
+	"github.com/google/platform-attestation/titan/dice/titandice/titandice"
 )
 
 const (
