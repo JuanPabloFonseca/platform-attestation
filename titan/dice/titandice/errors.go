@@ -15,194 +15,193 @@
 package titandice
 
 import (
-	"google3/third_party/golang/grpc/codes/codes"
-	"google3/third_party/golang/grpc/status/status"
+	"errors"
 )
 
 var (
 	// ErrMissingCertChain indicates that the certificate chain is missing.
-	ErrMissingCertChain = status.Error(codes.InvalidArgument, "missing certificate chain")
+	ErrMissingCertChain = errors.New("missing certificate chain")
 
 	// ErrMissingAKC indicates that the AliasKeyCertificate is missing.
-	ErrMissingAKC = status.Error(codes.InvalidArgument, "missing AliasKeyCertificate")
+	ErrMissingAKC = errors.New("missing AliasKeyCertificate")
 
 	// ErrMissingAKHC indicates that the AliasKeyHprivCertificate is missing.
-	ErrMissingAKHC = status.Error(codes.InvalidArgument, "missing AliasKeyHprivCertificate")
+	ErrMissingAKHC = errors.New("missing AliasKeyHprivCertificate")
 
 	// ErrMissingDIDC indicates that the DeviceIdCertificate is missing.
-	ErrMissingDIDC = status.Error(codes.InvalidArgument, "missing DeviceIdCertificate")
+	ErrMissingDIDC = errors.New("missing DeviceIdCertificate")
 
 	// ErrMissingDIDSC indicates that the DeviceIdScribeCertificate is missing.
-	ErrMissingDIDSC = status.Error(codes.InvalidArgument, "missing DeviceIdScribeCertificate")
+	ErrMissingDIDSC = errors.New("missing DeviceIdScribeCertificate")
 
 	// ErrMissingEKC indicates that the EndorsementKeyCertificate is missing.
-	ErrMissingEKC = status.Error(codes.InvalidArgument, "missing EndorsementKeyCertificate")
+	ErrMissingEKC = errors.New("missing EndorsementKeyCertificate")
 
 	// ErrMissingFH indicates that the FwHash is missing.
-	ErrMissingFH = status.Error(codes.InvalidArgument, "missing FwHash")
+	ErrMissingFH = errors.New("missing FwHash")
 
 	// ErrMissingHKC indicates that the TitanKeyCertificate is missing.
-	ErrMissingHKC = status.Error(codes.InvalidArgument, "missing TitanKeyCertificate")
+	ErrMissingHKC = errors.New("missing TitanKeyCertificate")
 
 	// ErrMissingValidateOpts indicates that the ValidateScribeCertificateChainOptions is missing.
-	ErrMissingValidateOpts = status.Error(codes.InvalidArgument, "missing ValidateScribeCertificateChainOptions")
+	ErrMissingValidateOpts = errors.New("missing ValidateScribeCertificateChainOptions")
 
 	// ErrAKCSignatureVersion indicates that the AliasKeyCertificate contains an invalid SignatureVersion.
-	ErrAKCSignatureVersion = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.SignatureVersion")
+	ErrAKCSignatureVersion = errors.New("bad AliasKeyCertificate.SignatureVersion")
 
 	// ErrAKCSignaturePurpose indicates that the AliasKeyCertificate contains an invalid SignaturePurpose.
-	ErrAKCSignaturePurpose = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.SignaturePurpose")
+	ErrAKCSignaturePurpose = errors.New("bad AliasKeyCertificate.SignaturePurpose")
 
 	// ErrAKCKeyType indicates that the AliasKeyCertificate contains an invalid KeyType.
-	ErrAKCKeyType = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.KeyType")
+	ErrAKCKeyType = errors.New("bad AliasKeyCertificate.KeyType")
 
 	// ErrAKCKeyOp indicates that the AliasKeyCertificate contains an invalid KeyOp.
-	ErrAKCKeyOp = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.KeyOp")
+	ErrAKCKeyOp = errors.New("bad AliasKeyCertificate.KeyOp")
 
 	// ErrAKCKeyAlg indicates that the AliasKeyCertificate contains an invalid KeyAlg.
-	ErrAKCKeyAlg = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.KeyAlg")
+	ErrAKCKeyAlg = errors.New("bad AliasKeyCertificate.KeyAlg")
 
 	// ErrAKCReserved0 indicates that the AliasKeyCertificate contains an invalid Reserved0.
-	ErrAKCReserved0 = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.Reserved0")
+	ErrAKCReserved0 = errors.New("bad AliasKeyCertificate.Reserved0")
 
 	// ErrAKCPubKeySize indicates that the AliasKeyCertificate contains an invalid PubKeySize.
-	ErrAKCPubKeySize = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.PubKeySize")
+	ErrAKCPubKeySize = errors.New("bad AliasKeyCertificate.PubKeySize")
 
 	// ErrAKCReserved1 indicates that the AliasKeyCertificate contains an invalid Reserved1.
-	ErrAKCReserved1 = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.Reserved1")
+	ErrAKCReserved1 = errors.New("bad AliasKeyCertificate.Reserved1")
 
 	// ErrAKCExtensionHeaderType indicates that the AliasKeyCertificate contains an invalid ExtensionHeaderType.
-	ErrAKCExtensionHeaderType = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.ExtensionHeaderType")
+	ErrAKCExtensionHeaderType = errors.New("bad AliasKeyCertificate.ExtensionHeaderType")
 
 	// ErrAKCCertValidity indicates that the AliasKeyCertificate contains an invalid CertValidity.
-	ErrAKCCertValidity = status.Error(codes.InvalidArgument, "bad AliasKeyCertificate.CertValidity")
+	ErrAKCCertValidity = errors.New("bad AliasKeyCertificate.CertValidity")
 
 	// ErrAKCHWCat indicates that the AliasKeyCertificate HwCat does not match the DeviceIdCertificate HwCat.
-	ErrAKCHWCat = status.Error(codes.InvalidArgument, "AliasKeyCertificate.HwCat does not match DeviceIdCertificate")
+	ErrAKCHWCat = errors.New("AliasKeyCertificate.HwCat does not match DeviceIdCertificate")
 
 	// ErrAKCHWID indicates that the AliasKeyCertificate HwId does not match the DeviceIdCertificate HwId.
-	ErrAKCHWID = status.Error(codes.InvalidArgument, "AliasKeyCertificate.HwId does not match DeviceIdCertificate")
+	ErrAKCHWID = errors.New("AliasKeyCertificate.HwId does not match DeviceIdCertificate")
 
 	// ErrAKCBootloaderTag indicates that the AliasKeyCertificate BootloaderTag does not match the DeviceIdCertificate BootloaderTag.
-	ErrAKCBootloaderTag = status.Error(codes.InvalidArgument, "AliasKeyCertificate.BootloaderTag does not match DeviceIdCertificate")
+	ErrAKCBootloaderTag = errors.New("AliasKeyCertificate.BootloaderTag does not match DeviceIdCertificate")
 
 	// ErrAKCKeyInfo indicates that the AliasKeyCertificate KeyInfo does not match the DeviceIdCertificate public key.
-	ErrAKCKeyInfo = status.Error(codes.InvalidArgument, "AliasKeyCertificate.KeyInfo does not match DeviceIdCertificate public key")
+	ErrAKCKeyInfo = errors.New("AliasKeyCertificate.KeyInfo does not match DeviceIdCertificate public key")
 
 	// ErrAKCSignature indicates that the AliasKeyCertificate Signature does not validate using the DeviceIdCertificate public key.
-	ErrAKCSignature = status.Error(codes.InvalidArgument, "AliasKeyCertificate.Signature does not validate with DeviceIdCertificate public key")
+	ErrAKCSignature = errors.New("AliasKeyCertificate.Signature does not validate with DeviceIdCertificate public key")
 
 	// ErrAKHCCertHash indicates that the AliasKeyHprivCertificate contains an invalid CertHash.
-	ErrAKHCCertHash = status.Error(codes.InvalidArgument, "bad AliasKeyHprivCertificate.CertHash")
+	ErrAKHCCertHash = errors.New("bad AliasKeyHprivCertificate.CertHash")
 
 	// ErrAKHCHpubKey indicates that the AliasKeyHprivCertificate contains an invalid HpubKey.
-	ErrAKHCHpubKey = status.Error(codes.InvalidArgument, "bad AliasKeyHprivCertificate.HpubKey")
+	ErrAKHCHpubKey = errors.New("bad AliasKeyHprivCertificate.HpubKey")
 
 	// ErrAKHCSignature indicates that the AliasKeyHprivCertificate Signature does not validate using the TitanKeyCertificate public key.
-	ErrAKHCSignature = status.Error(codes.InvalidArgument, "AliasKeyHprivCertificate.Signature does not validate with TitanKeyCertificate public key")
+	ErrAKHCSignature = errors.New("AliasKeyHprivCertificate.Signature does not validate with TitanKeyCertificate public key")
 
 	// ErrDIDCHWID0 indicates that the DeviceIdCertificate HwId is 0, indicating possible flash corruption.
-	ErrDIDCHWID0 = status.Error(codes.DataLoss, "Device ID Certificate hardware ID is 0, possible flash corruption")
+	ErrDIDCHWID0 = errors.New("Device ID Certificate hardware ID is 0, possible flash corruption")
 
 	// ErrDIDCSignatureVersion indicates that the DeviceIdCertificate contains an invalid SignatureVersion.
-	ErrDIDCSignatureVersion = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.SignatureVersion")
+	ErrDIDCSignatureVersion = errors.New("bad DeviceIdCertificate.SignatureVersion")
 
 	// ErrDIDCSignaturePurpose indicates that the DeviceIdCertificate contains an invalid SignaturePurpose.
-	ErrDIDCSignaturePurpose = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.SignaturePurpose")
+	ErrDIDCSignaturePurpose = errors.New("bad DeviceIdCertificate.SignaturePurpose")
 
 	// ErrDIDCKeyType indicates that the DeviceIdCertificate contains an invalid KeyType.
-	ErrDIDCKeyType = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.KeyType")
+	ErrDIDCKeyType = errors.New("bad DeviceIdCertificate.KeyType")
 
 	// ErrDIDCKeyOp indicates that the DeviceIdCertificate contains an invalid KeyOp.
-	ErrDIDCKeyOp = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.KeyOp")
+	ErrDIDCKeyOp = errors.New("bad DeviceIdCertificate.KeyOp")
 
 	// ErrDIDCKeyAlg indicates that the DeviceIdCertificate contains an invalid KeyAlg.
-	ErrDIDCKeyAlg = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.KeyAlg")
+	ErrDIDCKeyAlg = errors.New("bad DeviceIdCertificate.KeyAlg")
 
 	// ErrDIDCExtensionHeaderType indicates that the DeviceIdCertificate contains an invalid ExtensionHeaderType.
-	ErrDIDCExtensionHeaderType = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.ExtensionHeaderType")
+	ErrDIDCExtensionHeaderType = errors.New("bad DeviceIdCertificate.ExtensionHeaderType")
 
 	// ErrDIDCSignedDataSize indicates that the DeviceIdCertificate contains an invalid SignedDataSize.
-	ErrDIDCSignedDataSize = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.SignedDataSize")
+	ErrDIDCSignedDataSize = errors.New("bad DeviceIdCertificate.SignedDataSize")
 
 	// ErrDIDCScribeKeyID indicates that the DeviceIdCertificate contains a non-trusted ScribeKeyID.
-	ErrDIDCScribeKeyID = status.Error(codes.InvalidArgument, "bad DeviceIdCertificate.ScribeKeyID")
+	ErrDIDCScribeKeyID = errors.New("bad DeviceIdCertificate.ScribeKeyID")
 
 	// ErrDIDCScribeKeyInfo indicates that the DeviceIdCertificate KeyInfo does not match the ScribeCertificate public key.
-	ErrDIDCScribeKeyInfo = status.Error(codes.InvalidArgument, "DeviceIdCertificate.KeyInfo does not match ScribeCertificate public key")
+	ErrDIDCScribeKeyInfo = errors.New("DeviceIdCertificate.KeyInfo does not match ScribeCertificate public key")
 
 	// ErrDIDCScribeType indicates that the ScribeCertificate used to sign the DeviceIdCertificate is not a payload signing key.
-	ErrDIDCScribeType = status.Error(codes.InvalidArgument, "bad ScribeCertificate.Magic")
+	ErrDIDCScribeType = errors.New("bad ScribeCertificate.Magic")
 
 	// ErrDIDCSignature indicates that the DeviceIdCertificate Signature does not validate using the ScribeCertificate public key.
-	ErrDIDCSignature = status.Error(codes.InvalidArgument, "DeviceIdCertificate.Signature does not validate with ScribeCertificate public key")
+	ErrDIDCSignature = errors.New("DeviceIdCertificate.Signature does not validate with ScribeCertificate public key")
 
 	// ErrDIDSCCertHash indicates that the DeviceIdScribeCertificate contains an invalid CertHash.
-	ErrDIDSCCertHash = status.Error(codes.InvalidArgument, "bad DeviceIdScribeCertificate.CertHash")
+	ErrDIDSCCertHash = errors.New("bad DeviceIdScribeCertificate.CertHash")
 
 	// ErrDIDSCScribeKey indicates that the DeviceIdScribeCertificate contains a non-trusted ScribeRwKey.
-	ErrDIDSCScribeKey = status.Error(codes.InvalidArgument, "bad DeviceIdScribeCertificate.ScribeRwKey")
+	ErrDIDSCScribeKey = errors.New("bad DeviceIdScribeCertificate.ScribeRwKey")
 
 	// ErrDIDSCScribeType indicates that the ScribeCertificate used to sign the DeviceIdScribeCertificate is not a Titan scribe key.
-	ErrDIDSCScribeType = status.Error(codes.InvalidArgument, "bad ScribeCertificate.Magic")
+	ErrDIDSCScribeType = errors.New("bad ScribeCertificate.Magic")
 
 	// ErrDIDSCSignature indicates that the DeviceIdScribeCertificate Signature does not validate using the ScribeCertificate public key.
-	ErrDIDSCSignature = status.Error(codes.InvalidArgument, "DeviceIdScribeCertificate.Signature does not validate with ScribeCertificate public key")
+	ErrDIDSCSignature = errors.New("DeviceIdScribeCertificate.Signature does not validate with ScribeCertificate public key")
 
 	// ErrEKSignatureVersion indicates that the EkCertificate contains an invalid SignatureVersion.
-	ErrEKSignatureVersion = status.Error(codes.InvalidArgument, "bad EkCertificate.SignatureVersion")
+	ErrEKSignatureVersion = errors.New("bad EkCertificate.SignatureVersion")
 
 	// ErrEKSignaturePurpose indicates that the EkCertificate contains an invalid SignaturePurpose.
-	ErrEKSignaturePurpose = status.Error(codes.InvalidArgument, "bad EkCertificate.SignaturePurpose")
+	ErrEKSignaturePurpose = errors.New("bad EkCertificate.SignaturePurpose")
 
 	// ErrEKExtensionHeaderType indicates that the EkCertificate contains an invalid ExtensionHeaderType.
-	ErrEKExtensionHeaderType = status.Error(codes.InvalidArgument, "bad EkCertificate.ExtensionHeaderType")
+	ErrEKExtensionHeaderType = errors.New("bad EkCertificate.ExtensionHeaderType")
 
 	// ErrEKKeyType indicates that the EkCertificate contains an invalid KeyType.
-	ErrEKKeyType = status.Error(codes.InvalidArgument, "bad EkCertificate.KeyType")
+	ErrEKKeyType = errors.New("bad EkCertificate.KeyType")
 
 	// ErrEKKeyOp indicates that the EkCertificate contains an invalid KeyOp.
-	ErrEKKeyOp = status.Error(codes.InvalidArgument, "bad EkCertificate.KeyOp")
+	ErrEKKeyOp = errors.New("bad EkCertificate.KeyOp")
 
 	// ErrEKKeyAlg indicates that the EkCertificate contains an invalid KeyAlg.
-	ErrEKKeyAlg = status.Error(codes.InvalidArgument, "bad EkCertificate.KeyAlg")
+	ErrEKKeyAlg = errors.New("bad EkCertificate.KeyAlg")
 
 	// ErrEKReserved0 indicates that the EkCertificate contains an invalid Reserved0.
-	ErrEKReserved0 = status.Error(codes.InvalidArgument, "bad EkCertificate.Reserved0")
+	ErrEKReserved0 = errors.New("bad EkCertificate.Reserved0")
 
 	// ErrEKPubKeySize indicates that the EkCertificate contains an invalid PubKeySize.
-	ErrEKPubKeySize = status.Error(codes.InvalidArgument, "bad EkCertificate.PubKeySize")
+	ErrEKPubKeySize = errors.New("bad EkCertificate.PubKeySize")
 
 	// ErrEKReserved1 indicates that the EkCertificate contains an invalid Reserved1.
-	ErrEKReserved1 = status.Error(codes.InvalidArgument, "bad EkCertificate.Reserved1")
+	ErrEKReserved1 = errors.New("bad EkCertificate.Reserved1")
 
 	// ErrEKHWCat indicates that the EkCertificate HwCat does not match the AliasKeyCertificate HwCat.
-	ErrEKHWCat = status.Error(codes.InvalidArgument, "EkCertificate.HwCat does not match AliasKeyCertificate")
+	ErrEKHWCat = errors.New("EkCertificate.HwCat does not match AliasKeyCertificate")
 
 	// ErrEKHWID indicates that the EkCertificate HwId does not match the AliasKeyCertificate HwId.
-	ErrEKHWID = status.Error(codes.InvalidArgument, "EkCertificate.HwId does not match AliasKeyCertificate")
+	ErrEKHWID = errors.New("EkCertificate.HwId does not match AliasKeyCertificate")
 
 	// ErrEKBootloaderTag indicates that the EkCertificate BootloaderTag does not match the AliasKeyCertificate BootloaderTag.
-	ErrEKBootloaderTag = status.Error(codes.InvalidArgument, "EkCertificate.BootloaderTag does not match AliasKeyCertificate")
+	ErrEKBootloaderTag = errors.New("EkCertificate.BootloaderTag does not match AliasKeyCertificate")
 
 	// ErrEKFirmwareEpoch indicates that the EkCertificate FirmwareEpoch does not match the AliasKeyCertificate FirmwareEpoch.
-	ErrEKFirmwareEpoch = status.Error(codes.InvalidArgument, "EkCertificate.FirmwareEpoch does not match AliasKeyCertificate")
+	ErrEKFirmwareEpoch = errors.New("EkCertificate.FirmwareEpoch does not match AliasKeyCertificate")
 
 	// ErrEKFirmwareMajorVersionMismatch indicates that the EkCertificate FirmwareMajorVersion does not match the AliasKeyCertificate FirmwareMajorVersion.
-	ErrEKFirmwareMajorVersionMismatch = status.Error(codes.InvalidArgument, "EkCertificate.FirmwareMajorVersion does not match AliasKeyCertificate")
+	ErrEKFirmwareMajorVersionMismatch = errors.New("EkCertificate.FirmwareMajorVersion does not match AliasKeyCertificate")
 
 	// ErrEKFirmwareMajorVersionNonZero indicates that the EkCertificate FirmwareMajorVersion is non-zero.
-	ErrEKFirmwareMajorVersionNonZero = status.Error(codes.InvalidArgument, "EkCertificate.FirmwareMajorVersion is non-zero.")
+	ErrEKFirmwareMajorVersionNonZero = errors.New("EkCertificate.FirmwareMajorVersion is non-zero")
 
 	// ErrEKPubToECCPoint indicates an error converting an EkCertificate's key to an ECC point.
-	ErrEKPubToECCPoint = status.Error(codes.InvalidArgument, "error converting EkCertificate's public key to an ECC point")
+	ErrEKPubToECCPoint = errors.New("error converting EkCertificate's public key to an ECC point")
 
 	// ErrEKSignature indicates that the EkCertificate Signature does not validate using the AliasKeyCertificate.
-	ErrEKSignature = status.Error(codes.InvalidArgument, "EkCertificate.Signature does not validate with AliasKeyCertificate")
+	ErrEKSignature = errors.New("EkCertificate.Signature does not validate with AliasKeyCertificate")
 
 	// ErrEKTemplate indicates that the EK template was incorrect.
-	ErrEKTemplate = status.Error(codes.InvalidArgument, "EKCertificate object name does not match the expected template.")
+	ErrEKTemplate = errors.New("EKCertificate object name does not match the expected template")
 
 	// ErrEKTemplateAssembly indicates that the EK certificate could not be assembled.
-	ErrEKTemplateAssembly = status.Error(codes.Internal, "could not assemble EK certificate with expected template")
+	ErrEKTemplateAssembly = errors.New("could not assemble EK certificate with expected template")
 )
